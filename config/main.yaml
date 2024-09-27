@@ -1,0 +1,8 @@
+### Main file
+# This file is intended to contain main execution parameters
+
+# Global settings
+
+# Specific pipeline settings
+global:
+  thing: 1

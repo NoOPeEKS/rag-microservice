@@ -1,0 +1,70 @@
+version: '3.1'
+
+services:
+  api:
+    container_name: ${API_NAME}
+    image: ${API_IMAGE}
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    # environment:
+    #   - ES_HOST=${BBDD_NAME}
+    restart: always
+    volumes:
+      - ./data:/data
+      - ./reports:/data/reports
+      - /home/ubuntu/.cache:/root/.cache # caching huggingface models
+    # depends_on:
+    #   bbdd:
+    #     condition: service_healthy
+    ports:
+      - "80:80"
+    networks:
+      - project-network
+      
+    # MEMORY resource claim
+    # shm_size: 32gb
+    
+    # GPU resource claim
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  # logstash:
+  #   image: docker.elastic.co/logstash/logstash:8.15.1
+  #   volumes:
+  #     - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #     - ./logstash/data/sample.csv:/usr/share/logstash/sample.csv
+  #   depends_on:
+  #     - elasticsearch
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.15.1
+  #   environment:
+  #     SERVER_NAME: localhost
+  #     ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+  #   depends_on:
+  #     - elasticsearch
+  #   ports:
+  #     - 5601:5601
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  project-network:
+    driver: bridge

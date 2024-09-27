@@ -1,0 +1,27 @@
+## Gitignore file
+
+# Python related files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+build/
+*.egg-info/
+
+# Virtual environments
+.venv
+
+# IPython NB Checkpoints
+.ipynb_checkpoints/
+
+# Exclude internal executables
+/bin/internal_*
+
+# Exclude data
+/data/
+
+# Exclude reports
+/reports/
+
+# Enviornment variables file
+.env
