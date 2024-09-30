@@ -27,16 +27,6 @@ api:
     allow_headers:
       - "*"
 
-  example:
-    prefix: /example
-    tags:
-      - example
-    endpoints:
-      get:
-        pipeline: pipeline_name
-      post:
-        pipeline: pipeline_name
-
 chat:
   embedding_model: sentence-transformers/all-mpnet-base-v2
   collection_name: romeojuliet
