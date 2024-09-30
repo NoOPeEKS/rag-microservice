@@ -5,7 +5,7 @@ from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import TextLoader
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
 class RAG:
@@ -93,6 +93,7 @@ class RAG:
         tokenizer = AutoTokenizer.from_pretrained(
             model_name,
             torch_dtype=torch.float16,
+            clean_up_tokenization_spaces=False
         )
 
         model = AutoModelForCausalLM.from_pretrained(
@@ -138,7 +139,7 @@ class RAG:
         Returns:
             result: The answer to the given query
         """
-        relevant_docs = self.retriever.get_relevant_documents(query)
+        relevant_docs = self.retriever.invoke(query)
 
         combined_input = (
             "You are a helpful assistant. "
