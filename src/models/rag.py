@@ -15,11 +15,14 @@ class RAG:
     """
     def __init__(self, settings: dict) -> None:
         """
-        Constructor. THis method does the following:
-        - Set internal attributes
-        - Initialize the tokenizer
-        - Initialize the llm
-        - Initialize the retriever
+        Class constructor. Sets internal attributes, then initializes
+        the tokenizer, llm and the retriever based on provided config.
+        
+        Args:
+            settings: Dictionary of settings
+
+        Returns:
+            None
         """
         if torch.cuda.is_available():
             self.__device = torch.device('cuda')
