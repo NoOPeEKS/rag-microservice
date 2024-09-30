@@ -7,13 +7,6 @@ from langchain_community.vectorstores import Chroma
 from langchain_community.document_loaders import TextLoader
 from langchain.embeddings import HuggingFaceEmbeddings
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-persistent_dir = os.path.join(current_dir, "..", "..", "data", "chroma_db")
-document_dir = os.path.join(
-    current_dir, "..", "..", "data",
-    "external", "romeo_and_juliet.txt"
-)
-
 
 class RAG:
     """
@@ -32,6 +25,11 @@ class RAG:
             self.__device = torch.device('cuda')
         else:
             self.__device = torch.device('cpu')
+
+        self.__document_dir = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            "..", "..", "data", "external", "romeo_and_juliet.txt"
+        )
 
         self.tokenizer, self.llm = self._initialize_llm(settings['llm_model'])
 
@@ -58,7 +56,7 @@ class RAG:
         """
         embedding_model = HuggingFaceEmbeddings(model_name=model_name)
 
-        loader = TextLoader(document_dir)
+        loader = TextLoader(self.__document_dir)
         documents = loader.load()
 
         text_splitter = RecursiveCharacterTextSplitter(
