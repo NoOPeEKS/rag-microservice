@@ -5,6 +5,11 @@ import argparse
 
 from src.tools import utils, exceptions
 from src.tools.startup import params, logger
+__import__('pysqlite3')
+import sys
+
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 
 
 if __name__ == '__main__':
