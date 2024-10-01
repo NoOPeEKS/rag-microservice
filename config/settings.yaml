@@ -11,6 +11,10 @@ global:
       datefmt: '%Y-%m-%d %H:%M:%S'
     level: INFO
     file: data/logs/${EXEC_NAME}.log
+  rag_chatbot:
+    embedding_model: sentence-transformers/all-mpnet-base-v2
+    collection_name: romeojuliet
+    llm_model: stabilityai/stablelm-zephyr-3b
 
 api:
   config:

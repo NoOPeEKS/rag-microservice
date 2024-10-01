@@ -1,22 +1,25 @@
 from fastapi import APIRouter
-from app.models import example as example_models
+from src.tools.startup import params
+from src.models.rag import RAG
 
 
+rag = RAG(params['global']['rag_chatbot'])
 router = APIRouter(
     prefix="/chat",
 )
 
 @router.post(
-    path="/",
-    response_model=example_models.OutputBody,
+    path="/ask",
     responses={
-        200: {"Description": "Example post method"}})
-def answer_query(body: example_models.InputBody) -> example_models.OutputBody:
+        200: {"Description": "The answer to the user requested question"}})
+def answer_query(query: str):
     """
     Uses RAG to answer the given query
     """
 
-    return {"answer": "fuck you"}
+    answer = rag.answer_question(query).split("\n")[-1]
+
+    return {"answer": answer}
 
 
 
