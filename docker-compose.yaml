@@ -26,13 +26,13 @@ services:
     # shm_size: 32gb
     
     # GPU resource claim
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
   # elasticsearch:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
   #   environment:
