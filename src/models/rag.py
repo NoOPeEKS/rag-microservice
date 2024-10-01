@@ -17,7 +17,7 @@ class RAG:
         """
         Class constructor. Sets internal attributes, then initializes
         the tokenizer, llm and the retriever based on provided config.
-        
+
         Args:
             settings: Dictionary of settings
 
