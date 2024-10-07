@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Request
-from pydantic import BaseModel
+from app.models.markdown import Markdown
+from langchain.schema import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.tools.startup import logger
 
 router = APIRouter(prefix="/index")
-
-
-class Markdown(BaseModel):
-    markdown: str
 
 
 @router.post(
@@ -15,4 +13,9 @@ class Markdown(BaseModel):
         200: {"Description": "Correcly indexed the document"}})
 def index_document(markdown: Markdown, request: Request):
     logger.info("Indexing document")
-    logger.info(markdown)
+    doc = Document(page_content=markdown.markdown)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    docs = text_splitter.split_documents([doc])
+    rag = request.app.rag
+    rag.retriever.add_documents(docs)
+    logger.info("Indexing documents finished")
