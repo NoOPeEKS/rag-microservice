@@ -8,11 +8,12 @@ router = APIRouter(prefix="/index")
 
 
 @router.post(
-    path="/",
+    path="",
     responses={
         200: {"Description": "Correcly indexed the document"}})
 def index_document(markdown: Markdown, request: Request):
     logger.info("Indexing document")
+    logger.info(f"Document content: {markdown.markdown}")
     doc = Document(page_content=markdown.markdown)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     docs = text_splitter.split_documents([doc])
